@@ -198,7 +198,7 @@ func searchLivestreamsHandler(c echo.Context) error {
 			livestreamIDs = append(livestreamIDs, keyTaggedLivestream.LivestreamID)
 		}
 
-		query, params, err := sqlx.In("SELECT * FROM livestreams WHERE id IN (?)", livestreamIDs)
+		query, params, err := sqlx.In("SELECT * FROM livestreams WHERE id IN (?) ORDER BY id DESC", livestreamIDs)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "failed to construct IN query: "+err.Error())
 		}
