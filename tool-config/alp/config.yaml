@@ -10,6 +10,7 @@ matching_groups:            # array
   - ^/api/auth$
   - ^/api/signout$
   - ^/api/livestream/[0-9]+$
+  - ^/api/livestream/[0-9]+/livecomment$
   - ^/api/livestream/[0-9]+/livecomment?limit=[0-9]+$
   - ^/api/livestream/[0-9]+/reaction$
   - ^/api/livestream/[0-9]+/reaction?limit=[0-9]+$
