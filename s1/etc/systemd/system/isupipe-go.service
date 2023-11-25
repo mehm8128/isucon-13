@@ -14,7 +14,7 @@ ExecStart=/home/isucon/webapp/go/isupipe
 ExecStop=/bin/kill -s QUIT $MAINPID
 
 Restart=on-failure
-RestartSec=5
+RestartSec=10min
 
 [Install]
 WantedBy=multi-user.target
