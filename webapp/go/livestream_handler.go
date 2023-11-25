@@ -527,31 +527,3 @@ func fillLivestreamResponse(ctx context.Context, tx *sqlx.Tx, livestreamModel Li
 	}
 	return livestream, nil
 }
-
-func fillLivestreamResponseWithOwner(ctx context.Context, tx *sqlx.Tx, livestreamModel LivestreamModel, owner User) (Livestream, error) {
-	var livestreamTags []*LivestreamTag
-	if err := tx.SelectContext(ctx, &livestreamTags, "SELECT * FROM livestream_tags JOIN tags ON livestream_tags.tag_id = tags.id WHERE livestream_tags.livestream_id = ?", livestreamModel.ID); err != nil {
-		return Livestream{}, err
-	}
-
-	tags := make([]Tag, len(livestreamTags))
-	for i, livestreamTag := range livestreamTags {
-		tags[i] = Tag{
-			ID:   livestreamTag.TagID,
-			Name: livestreamTag.Name,
-		}
-	}
-
-	livestream := Livestream{
-		ID:           livestreamModel.ID,
-		Owner:        owner,
-		Title:        livestreamModel.Title,
-		Tags:         tags,
-		Description:  livestreamModel.Description,
-		PlaylistUrl:  livestreamModel.PlaylistUrl,
-		ThumbnailUrl: livestreamModel.ThumbnailUrl,
-		StartAt:      livestreamModel.StartAt,
-		EndAt:        livestreamModel.EndAt,
-	}
-	return livestream, nil
-}
