@@ -11,7 +11,7 @@ matching_groups:            # array
   - ^/api/signout$
   - ^/api/livestream/[0-9]+$
   - ^/api/livestream/[0-9]+/livecomment$
-  - ^/api/livestream/[0-9]+/livecomment?limit=[0-9]+$
+  - ^/api/livestream/[0-9]+/livecomment\?limit=[0-9]+$
   - ^/api/livestream/[0-9]+/reaction$
   - ^/api/livestream/[0-9]+/reaction?limit=[0-9]+$
   - ^/api/livestream/[0-9]+/report$
@@ -25,8 +25,8 @@ matching_groups:            # array
   - ^/api/user/[0-9a-zA-Z]+/statistics$
   - ^/api/user/[0-9a-zA-Z]+/icon$
   - ^/api/user/[0-9a-zA-Z]+/theme$
-  - ^/api/livestream/search?tag=[%0-9a-zA-Z]+$
-  - ^/api/livestream/search?limit=[0-9]+$
+  - ^/api/livestream/search\?tag=[%0-9a-zA-Z]+$
+  - ^/api/livestream/search\?limit=[0-9]+$
   - ^/api/auth$
   - ^/api/trend$
   - ^/assets$
