@@ -8,12 +8,11 @@ import (
 	"log"
 	"net"
 	"net/http"
-	_ "net/http/pprof"
+
+	//_ "net/http/pprof"
 	"os"
 	"os/exec"
 	"strconv"
-
-	"github.com/felixge/fgprof"
 
 	"github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
@@ -22,7 +21,6 @@ import (
 
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo-contrib/session"
-	echolog "github.com/labstack/gommon/log"
 )
 
 const (
@@ -123,14 +121,14 @@ func initializeHandler(c echo.Context) error {
 }
 
 func main() {
-	http.DefaultServeMux.Handle("/debug/fgprof", fgprof.Handler())
-	go func() {
-		log.Fatal(http.ListenAndServe(":6060", nil))
-	}()
+	// http.DefaultServeMux.Handle("/debug/fgprof", fgprof.Handler())
+	// go func() {
+	// 	log.Fatal(http.ListenAndServe(":6060", nil))
+	// }()
 
 	e := echo.New()
-	e.Debug = true
-	e.Logger.SetLevel(echolog.DEBUG)
+	//e.Debug = true
+	//e.Logger.SetLevel(echolog.DEBUG)
 	e.Use(middleware.Logger())
 	cookieStore := sessions.NewCookieStore(secret)
 	cookieStore.Options.Domain = "*.u.isucon.dev"
