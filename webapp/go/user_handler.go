@@ -106,7 +106,11 @@ func getIconHandler(c echo.Context) error {
 
 	var imageHash string
 	if err := tx.GetContext(ctx, &imageHash, "SELECT image_hash FROM icons WHERE user_id = ?", user.ID); err != nil {
-		return echo.NewHTTPError(http.StatusNotFound, "failed to get user icon hash: "+err.Error())
+		if errors.Is(err, sql.ErrNoRows) {
+			return c.File(fallbackImage)
+		} else {
+			return echo.NewHTTPError(http.StatusInternalServerError, "failed to get user icon hash: "+err.Error())
+		}
 	}
 	if c.Request().Header.Get("If-None-Match") == fmt.Sprintf("%x", imageHash) {
 		return c.NoContent(http.StatusNotModified)
