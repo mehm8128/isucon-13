@@ -484,6 +484,13 @@ func getLivecommentReportsHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, reports)
 }
 
+type LivestreamTag struct {
+	ID           int64  `db:"id" json:"id"`
+	LivestreamID int64  `db:"livestream_id" json:"livestream_id"`
+	TagID        int64  `db:"tag_id" json:"tag_id"`
+	Name         string `db:"name" json:"name"`
+}
+
 func fillLivestreamResponse(ctx context.Context, tx *sqlx.Tx, livestreamModel LivestreamModel) (Livestream, error) {
 	ownerModel := UserModel{}
 	if err := tx.GetContext(ctx, &ownerModel, "SELECT * FROM users WHERE id = ?", livestreamModel.UserID); err != nil {
@@ -494,21 +501,16 @@ func fillLivestreamResponse(ctx context.Context, tx *sqlx.Tx, livestreamModel Li
 		return Livestream{}, err
 	}
 
-	var livestreamTagModels []*LivestreamTagModel
-	if err := tx.SelectContext(ctx, &livestreamTagModels, "SELECT * FROM livestream_tags WHERE livestream_id = ?", livestreamModel.ID); err != nil {
+	var livestreamTags []*LivestreamTag
+	if err := tx.SelectContext(ctx, &livestreamTags, "SELECT * FROM livestream_tags JOIN tags ON livestream_tags.tag_id = tags.id WHERE livestream_tags.livestream_id = ?", livestreamModel.ID); err != nil {
 		return Livestream{}, err
 	}
 
-	tags := make([]Tag, len(livestreamTagModels))
-	for i := range livestreamTagModels {
-		tagModel := TagModel{}
-		if err := tx.GetContext(ctx, &tagModel, "SELECT * FROM tags WHERE id = ?", livestreamTagModels[i].TagID); err != nil {
-			return Livestream{}, err
-		}
-
+	tags := make([]Tag, len(livestreamTags))
+	for i, livestreamTag := range livestreamTags {
 		tags[i] = Tag{
-			ID:   tagModel.ID,
-			Name: tagModel.Name,
+			ID:   livestreamTag.TagID,
+			Name: livestreamTag.Name,
 		}
 	}
 
