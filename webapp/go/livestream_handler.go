@@ -149,9 +149,9 @@ func reserveLivestreamHandler(c echo.Context) error {
 	livestreamModel.ID = livestreamID
 
 	// タグ追加
-	tagsToBeInserted := make([]*LivestreamTagModel, 0)
+	tagsToBeInserted := make([]LivestreamTagModel, 0)
 	for _, tagID := range req.Tags {
-		tagsToBeInserted = append(tagsToBeInserted, &LivestreamTagModel{
+		tagsToBeInserted = append(tagsToBeInserted, LivestreamTagModel{
 			LivestreamID: livestreamID,
 			TagID:        tagID,
 		})
